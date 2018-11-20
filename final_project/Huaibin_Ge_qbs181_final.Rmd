@@ -1,0 +1,43 @@
+---
+title: "Final"
+author: "Huaibin Ge"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+3.
+```{r cars}
+library(RODBC)
+library(tidyverse)
+library(tidyr)
+library(dplyr)
+# Connect to sql by r
+connect <- odbcConnect("dartmouth","hge","hge@qbs181")
+
+# download dataset from sql
+demo <- sqlQuery(connect,"select * from Demographics")
+cc <- sqlQuery(connect,"select * from ChronicConditions")
+tx <- sqlQuery(connect,"select * from Text")
+
+# save dataset as csv
+write.csv(demo,file = "demo.csv")
+write.csv(cc,file = "cc.csv")
+write.csv(tx,file = "tx.csv")
+
+# merge Text and ChronicConditions
+txcc <- merge(tx, cc, by.x = "tri_contactId", 
+              by.y = "tri_patientid")
+
+# merge Text and ChronicConditions and Demographics
+txccdemo <- merge(txcc, demo, by.x = "tri_contactId", 
+                  by.y = "contactid")
+
+# 1 Row per ID by choosing on the latest date when the text was sent
+txccdemo1 <- txccdemo %>% group_by(tri_contactId) %>% 
+  slice(which.max(TextSentDate))
+
+```
+
