@@ -1,5 +1,5 @@
 # Data_Wrangling_Project_and_Tasks
-[tab][tab]Purpose: Use sql and r for data wranging and data cleaning
+    Purpose: Use sql and r for data wranging and data cleaning
 Statement: I have been given the permission to make my work public
 Description for every work:
 Project 1 focus on renaming column name and creating a new column in sql
